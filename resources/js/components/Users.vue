@@ -53,22 +53,56 @@
         </button>
       </div>
       <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary btn-danger" data-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-primary">Crear Usuario</button>
-      </div>
+        
+          	
+				<form class="cd-signin-modal__form">
+					<p class="cd-signin-modal__fieldset">
+                       <label class="cd-signin-modal__label cd-signin-modal__label--username cd-signin-modal__label--image-replace" for="signup-username">Nombre</label>
+                        <input placeholder="Nombre del Usuario" v-model="form.name" type="text" id="signup-username" name="name" class="form-control cd-signin-modal__input cd-signin-modal__input--full-width cd-signin-modal__input--has-padding cd-signin-modal__input--has-border" :class="{ 'is-invalid': form.errors.has('name') }">
+                        <has-error :form="form" field="name"></has-error>
+					</p>
+
+					<p class="cd-signin-modal__fieldset">
+						<label class="cd-signin-modal__label cd-signin-modal__label--email cd-signin-modal__label--image-replace" for="signup-email">E-mail</label>
+						<input class="cd-signin-modal__input cd-signin-modal__input--full-width cd-signin-modal__input--has-padding cd-signin-modal__input--has-border" id="signup-email" type="email" placeholder="E-mail">
+						
+					</p>
+
+					<p class="cd-signin-modal__fieldset">
+						<label class="cd-signin-modal__label cd-signin-modal__label--password cd-signin-modal__label--image-replace" for="signup-password">Password</label>
+						<input class="cd-signin-modal__input cd-signin-modal__input--full-width cd-signin-modal__input--has-padding cd-signin-modal__input--has-border" id="signup-password" type="text"  placeholder="Password">
+					
+						
+					</p>
+
+				<button type="submit" class="btn btn-info btn-lg btn-block">Crear Usuario</button>
+                <button type="button" class="btn btn-block btn-danger btn-lg">Info</button>
+				</form>
+			
+
     </div>
   </div>
 </div>
         </div>
-        
+        </div>
   
 </template>
 
 <script>
     export default {
+        data () {
+            return {
+                form: new Form({
+                    name: '',
+                    email: '',
+                    password: '',
+                    type: '',
+                    photo: '',
+
+                
+                })
+            }
+        },
         mounted() {
             console.log('Component mounted.')
         }

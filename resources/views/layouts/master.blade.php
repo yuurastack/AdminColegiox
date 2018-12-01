@@ -100,33 +100,26 @@
           </ul>
         </li>
 
-        <li class="nav-item has-treeview menu-open">
-          <a href="#" class="nav-link ">
-            <i class="nav-icon fas fa-user-tie"></i>
+        <li class="nav-item has-treeview">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fa fa-cog green"></i>
             <p>
-              Alumnos
+              Management
               <i class="right fa fa-angle-left"></i>
             </p>
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="#" class="nav-link ">
-                <i class="nav'icon fas fa-plus"></i>
-                <p>Añadir Alumno</p>
-              </a>
+              <router-link to= '/Users' class="nav-link">
+                <i class="fas fa-users nav-icon"></i>
+                <p>Users</p>
+              </router-link>
             </li>
-            <li class="nav-item">
-              <a href="#" class="nav-link">
-                <i class="nav-icon fas fa-users"></i>
-                <p>
-                 Listado de Alumnos
-                </p>
-              </a>
-            </li>
+
           </ul>
         </li>
-
-
+        
+        
         <li class="nav-item">
           <router-link to= '/Profile' class="nav-link">
             <i class="nav-icon fas fa-user"></i>
@@ -135,13 +128,27 @@
             </p>
           </router-link>
         </li>
+
+
+
         <li class="nav-item">
-          <a href="#" class="nav-link">
+
+          <a class="nav-link" href="{{ route('logout') }}"
+          onclick="event.preventDefault();
+             document.getElementById('logout-form').submit();">
             <i class="nav-icon fas fa-power-off"></i>
             <p>
-              Log Out
+              {{ __('Logout') }}
             </p>
-          </a>
+           
+       </a>
+
+       <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+           @csrf
+       </form>
+
+
+
         </li>
         </ul>
       </nav>

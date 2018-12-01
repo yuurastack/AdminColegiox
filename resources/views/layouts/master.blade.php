@@ -74,37 +74,13 @@
             </p>
           </router-link>
         </li>
-        <li class="nav-item has-treeview menu-open">
-          <router-link href="#" class="nav-link ">
-            <i class="nav-icon fas fa-user-tie"></i>
-            <p>
-              Profesores
-              <i class="right fa fa-angle-left"></i>
-            </p>
-          </router-link>
-          <ul class="nav nav-treeview">
-            <li class="nav-item">
-              <a href="#" class="nav-link ">
-                <i class="nav'icon fas fa-plus"></i>
-                <p>Añadir Profesor</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="#" class="nav-link">
-                <i class="nav-icon fas fa-users"></i>
-                <p>
-                 Listado de Profesores
-                </p>
-              </a>
-            </li>
-          </ul>
-        </li>
+
 
         <li class="nav-item has-treeview">
           <a href="#" class="nav-link">
             <i class="nav-icon fa fa-cog green"></i>
             <p>
-              Management
+              Administración
               <i class="right fa fa-angle-left"></i>
             </p>
           </a>
@@ -112,7 +88,7 @@
             <li class="nav-item">
               <router-link to= '/Users' class="nav-link">
                 <i class="fas fa-users nav-icon"></i>
-                <p>Users</p>
+                <p>Usuarios</p>
               </router-link>
             </li>
 
@@ -159,24 +135,6 @@
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Starter Page</h1>
-          </div><!-- /.col -->
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Starter Page</li>
-            </ol>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content-header -->
-
     <!-- Main content -->
     <div class="content">
       <div class="container-fluid">

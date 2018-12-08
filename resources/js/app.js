@@ -9,6 +9,10 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 import { Form, HasError, AlertError } from 'vform'
+import { TableComponent, TableColumn } from 'vue-table-component';
+import {ServerTable, ClientTable, Event} from 'vue-tables-2';
+
+
 
 window.Form = Form;
 Vue.component(HasError.name, HasError)
@@ -17,6 +21,12 @@ Vue.component(AlertError.name, AlertError)
 import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
+Vue.use(TableComponent);
+Vue.use(TableColumn);
+
+Vue.use(ClientTable);
+
+
 
 let routes = [
     { path: '/dashboard', component: require('./components/Dashboard.vue') },
@@ -53,7 +63,8 @@ Vue.component('example-component', require('./components/ExampleComponent.vue'))
 
 const app = new Vue({
     el: '#app',
-    router
+    router,
+    
 });
 
 

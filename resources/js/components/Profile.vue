@@ -1,23 +1,37 @@
 <template>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card card-default">
-                    <div class="card-header">Profile Component</div>
+    <div class="container">        
 
-                    <div class="card-body">
-                        I'm an example component.
-                    </div>
-                </div>
-            </div>
-        </div>
+
+ <div id="people">
+  <v-client-table :data="tableData" :columns="columns" :options="options"></v-client-table>
+</div>
+
     </div>
 </template>
 
 <script>
     export default {
+      data () {
+            return {
+        columns: ['id', 'name', 'age'],
+        tableData: [
+            { id: 1, name: "John", age: "20" },
+            { id: 2, name: "Jane", age: "24" },
+            { id: 3, name: "Susan", age: "16" },
+            { id: 4, name: "Chris", age: "55" },
+            { id: 5, name: "Dan", age: "40" }
+        ],
+        options: {
+            // see the options API
+        }
+    } },
+
         mounted() {
             console.log('Component mounted.')
         }
+
+        
     }
 </script>
+
+

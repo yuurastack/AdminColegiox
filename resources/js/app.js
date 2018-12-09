@@ -1,4 +1,3 @@
-
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -8,23 +7,46 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
-import { Form, HasError, AlertError } from 'vform'
-import { TableComponent, TableColumn } from 'vue-table-component';
+import moment from 'moment';
+import { Form, HasError, AlertError,AlertErrors, AlertSuccess } from 'vform'
+import VueProgressBar from 'vue-progressbar'
 import {ServerTable, ClientTable, Event} from 'vue-tables-2';
 
+import Swal from 'sweetalert2'
+window.wal = Swal;
 
+const toast = Swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 5000
+});
+
+window.toast =toast;
+
+window.NewVue =new Vue();
+
+// CommonJS
+
+
+Vue.use(VueProgressBar, {
+  color: 'rgb(143, 255, 199)',
+  failedColor: 'red',
+  height: '2px'
+})
 
 window.Form = Form;
 Vue.component(HasError.name, HasError)
 Vue.component(AlertError.name, AlertError)
+Vue.component(AlertErrors.name, AlertError)
+Vue.component(AlertSuccess.name, AlertError)
 
 import VueRouter from 'vue-router'
 
-Vue.use(VueRouter)
-Vue.use(TableComponent);
-Vue.use(TableColumn);
 
+Vue.use(VueRouter)
 Vue.use(ClientTable);
+
 
 
 
@@ -38,6 +60,14 @@ const router = new VueRouter({
     mode: 'history',
     routes // short for `routes: routes`
   })
+
+  Vue.filter('Mayus',function(text){
+    return text.charAt(0).toUpperCase() + text.slice(1)
+  });
+
+  Vue.filter ('date',function(created){
+    return moment(created).format('DD/MM/YYYY');
+  });
 
 /**
  * The following block of code may be used to automatically register your

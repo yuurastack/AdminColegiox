@@ -1,4 +1,5 @@
 <style>
+
 .cd-signin-modal__label {
   font-size: 1.4rem;
 }
@@ -88,14 +89,14 @@
 <template>
    
         <div class="row mt-5">
-            <div class="col-1"></div>
+                  <div class="col-1"></div>
           <div class="col-10">
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Listado de Usuarios</h3>
 
                 <div class="card-tools">
-                    <button class="btn btn-success " data-toggle="modal" data-target="#exampleModal">Nuevo Usuario <i class="fa fa-user-plus fa-fw"></i></button>
+                    <button class="btn btn-success " @click="nuevaModal">Nuevo Usuario <i class="fa fa-user-plus fa-fw"></i></button>
                 </div>
               </div>
               <!-- /.card-header -->
@@ -108,16 +109,19 @@
                     <th>Tipo</th>
                     <th>Modificar</th>
                   </tr>
-                  <tr v-for="usuario in users.data" :key="usuario.id">
-                    <td>{{usuario.id}}</td>
-                    <td>{{usuario.name}}</td>
-                    <td>{{usuario.email}} </td>
-                    <td>{{usuario.type}} </td>
-                    <td><span class="tag tag-success">Approved</span></td>
+                  <tr v-for="user in users" :key="user.id">
+                    <td>{{user.id}}</td>
+                    <td>{{user.name}}</td>
+                    <td>{{user.email}} </td>
+                    <td>{{user.type | Mayus}} </td>
                     <td>
-                        <a href=""> <i class="fa fa-edit"></i> </a>
+                        <a href="#" @click.prevent="editarModal(user)"> 
+                          <i class="fa fa-edit"></i> 
+                        </a>
                         /
-                        <a href=""> <i class="fa fa-trash red"></i> </a>
+                        <a href="#" @click.prevent="EliminarUsuario(user.id)">
+                           <i class="fa fa-trash red"></i>
+                        </a>
 
                     </td>
                   </tr>
@@ -131,19 +135,20 @@
 
 
           <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="formularioUsuarios" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Añadir nuevo Usuario</h5>
+        <h5 v-show="!edicion" class="modal-title" id="exampleModalLabel">Añadir nuevo Usuario</h5>
+        <h5 v-show="edicion" class="modal-title" id="exampleModalLabel">Actualizar usuario {{form.name}}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
 
       <div class="modal-body">
-				<form @submit.prevent="crearUsuario" class="cd-signin-modal__form">
-					<p class="cd-signin-modal__fieldset">
+				<form @submit.prevent="edicion ? editarUsuario() : crearUsuario()" class="cd-signin-modal__form">
+					<p class="cd-signin-modal__fieldset form-group">
                        <label class="cd-signin-modal__label cd-signin-modal__label--username cd-signin-modal__label--image-replace" for="signup-username">Nombre</label>
                         <input placeholder="Nombre del Usuario" v-model="form.name" type="text" id="signup-username" name="name" class="form-control cd-signin-modal__input cd-signin-modal__input--full-width cd-signin-modal__input--has-padding cd-signin-modal__input--has-border" :class="{ 'is-invalid': form.errors.has('name') }">
                         <has-error :form="form" field="name"></has-error>
@@ -159,9 +164,9 @@
             
               <select name="type" v-model="form.type" id="type" class="form-control" :class="{ 'is-invalid': form.errors.has('type') }">
                   <option value="">Selecciona rol de Usuario</option>
-                  <option value="admin">Apoderado</option>
-                  <option value="user">Profesor</option>
-                  <option value="author">Alumno</option>
+                  <option value="apoderado">   Apoderado</option>
+                  <option value="profesor">   Profesor</option>
+                  <option value="alumno">   Alumno</option>
               </select>
               <has-error :form="form" field="type"></has-error>
           </p>
@@ -172,9 +177,11 @@
                         <has-error :form="form" field="password"></has-error>
 					</p>
 
-          <p class="cd-signin-modal__fieldset">
-                  <input class="cd-signin-modal__input cd-signin-modal__input--full-width cd-signin-modal__input--has-padding" type="submit" value="Crear Usuario">
-          </p>
+          <button v-show="!edicion" type="submit" class="btn btn-success btn-lg btn-block">Crear Usuario</button>
+          <button v-show="edicion" type="submit" class="btn btn-primary btn-lg btn-block">Actualizar Usuario</button>
+
+
+
 				</form>
 			
 
@@ -193,6 +200,7 @@
     export default {
         data () {
             return {
+                edicion: false,
                 users: {},
                 form: new Form({
                     name: '',
@@ -207,18 +215,81 @@
         },
 
         methods:{
+          editarUsuario(){
+            this.$Progress.start()
+
+          },
           crearUsuario(){
+            this.$Progress.start()
             this.form.post('api/user')
+            .then(()=>{
+              NewVue.$emit('After');
+              toast({
+                    type: 'success',
+                    title: 'Usuario ingresado exitosamente'
+                  })
+              this.$Progress.finish()
+            })
+            .catch(()=>{
+                  toast({
+                    type: 'error',
+                    title: 'Problema al ingresar Usuario'
+                  })
+                  this.$Progress.finish()
+            })
 
           },
           CargarUsuarios(){ 
-            axios.get("api/user").then(({ data }) => (this.users = data));
+            axios.get("api/user").then(({ data }) => (this.users = data.data));
+          },
+          EliminarUsuario(id){
+
+            wal({
+                    title: '¿Está Seguro?',
+                    text: "Luego no podrá revertir la operación",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Sí, eliminar'
+                  }).then((result) => {
+                        // Send request to the server
+                         if (result.value) {
+                                this.form.delete('api/user/'+id).then(()=>{
+                                        wal(
+                                        'Eliminado',
+                                        'El Usuario ha sido eliminado exitosamente',
+                                        'success'
+                                        )
+                                    NewVue.$emit('After');
+                                }).catch(()=> {
+                                    wal("Fallo!", "Hubo un error al tratar de elminar al usuario", "warning");
+                                });
+                         }
+                    })
+
+
+          },
+          nuevaModal(){
+            this.edicion=false;
+            this.form.reset();
+            $('#formularioUsuarios').modal('show')
+          },
+          editarModal(user){
+            this.edicion=true;
+            this.form.clear();
+            $('#formularioUsuarios').modal('show')
+            this.form.fill(user)
+            
           }
 
 
         },
         created() {
+         
             this.CargarUsuarios();
+            NewVue.$on('After',()=>{this.CargarUsuarios()});
+          
         }
     }
 </script>

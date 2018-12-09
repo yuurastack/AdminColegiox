@@ -11,8 +11,10 @@
   <title>Admin Colegio | Starter</title>
 
 <link rel="stylesheet" href="/css/app.css">
+
+
 </head>
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini body-bg">
 <div class="wrapper" id="app">
 
   <!-- Navbar -->
@@ -139,6 +141,7 @@
     <div class="content">
       <div class="container-fluid">
         <router-view></router-view>
+        <vue-progress-bar></vue-progress-bar>
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content -->
@@ -159,5 +162,7 @@
 <!-- ./wrapper -->
 
 <script src="/js/app.js"></script>
+
+
 </body>
 </html>

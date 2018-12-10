@@ -83783,6 +83783,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       edicion: false,
       users: {},
       form: new Form({
+        id: '',
         name: '',
         email: '',
         password: '',
@@ -83796,10 +83797,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
   methods: {
     editarUsuario: function editarUsuario() {
+      var _this = this;
+
       this.$Progress.start();
+      this.form.put('api/user/' + this.form.id).then(function () {
+        wal('Actualizado', 'El Usuario ha sido actualizado exitosamente', 'success');
+        NewVue.$emit('After');
+        $('#formularioUsuarios').modal('hide');
+        _this.$Progress.finish();
+      }).catch(function () {
+        _this.$Progress.fail();
+      });
     },
     crearUsuario: function crearUsuario() {
-      var _this = this;
+      var _this2 = this;
 
       this.$Progress.start();
       this.form.post('api/user').then(function () {
@@ -83808,25 +83819,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           type: 'success',
           title: 'Usuario ingresado exitosamente'
         });
-        _this.$Progress.finish();
+        _this2.$Progress.finish();
       }).catch(function () {
-        toast({
-          type: 'error',
-          title: 'Problema al ingresar Usuario'
-        });
-        _this.$Progress.finish();
+        _this2.$Progress.fail();
       });
     },
     CargarUsuarios: function CargarUsuarios() {
-      var _this2 = this;
+      var _this3 = this;
 
       axios.get("api/user").then(function (_ref) {
         var data = _ref.data;
-        return _this2.users = data.data;
+        return _this3.users = data.data;
       });
     },
     EliminarUsuario: function EliminarUsuario(id) {
-      var _this3 = this;
+      var _this4 = this;
 
       wal({
         title: '¿Está Seguro?',
@@ -83837,12 +83844,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         cancelButtonColor: '#d33',
         confirmButtonText: 'Sí, eliminar'
       }).then(function (result) {
+        _this4.$Progress.start();
         // Send request to the server
         if (result.value) {
-          _this3.form.delete('api/user/' + id).then(function () {
+          _this4.form.delete('api/user/' + id).then(function () {
             wal('Eliminado', 'El Usuario ha sido eliminado exitosamente', 'success');
+            _this4.$Progress.finish();
             NewVue.$emit('After');
           }).catch(function () {
+            _this4.$Progress.fail();
             wal("Fallo!", "Hubo un error al tratar de elminar al usuario", "warning");
           });
         }
@@ -83861,11 +83871,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     }
   },
   created: function created() {
-    var _this4 = this;
+    var _this5 = this;
 
     this.CargarUsuarios();
     NewVue.$on('After', function () {
-      _this4.CargarUsuarios();
+      _this5.CargarUsuarios();
     });
   }
 });
@@ -84016,7 +84026,14 @@ var render = function() {
                     staticClass: "modal-title",
                     attrs: { id: "exampleModalLabel" }
                   },
-                  [_vm._v("Actualizar usuario " + _vm._s(_vm.form.name))]
+                  [
+                    _vm._v(
+                      "Actualizar " +
+                        _vm._s(_vm.form.type) +
+                        " " +
+                        _vm._s(_vm.form.name)
+                    )
+                  ]
                 ),
                 _vm._v(" "),
                 _vm._m(1)

@@ -140,7 +140,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 v-show="!edicion" class="modal-title" id="exampleModalLabel">Añadir nuevo Usuario</h5>
-        <h5 v-show="edicion" class="modal-title" id="exampleModalLabel">Actualizar usuario {{form.name}}</h5>
+        <h5 v-show="edicion" class="modal-title" id="exampleModalLabel">Actualizar {{form.type}} {{form.name}}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -203,6 +203,7 @@
                 edicion: false,
                 users: {},
                 form: new Form({
+                    id: '',
                     name: '',
                     email: '',
                     password: '',
@@ -217,6 +218,20 @@
         methods:{
           editarUsuario(){
             this.$Progress.start()
+            this.form.put('api/user/'+this.form.id)
+            .then(()=>{
+              wal(
+                    'Actualizado',
+                    'El Usuario ha sido actualizado exitosamente',
+                    'success'
+                    )
+              NewVue.$emit('After');
+              $('#formularioUsuarios').modal('hide')
+              this.$Progress.finish()
+            })
+            .catch(()=>{
+              this.$Progress.fail()
+            })
 
           },
           crearUsuario(){
@@ -231,11 +246,7 @@
               this.$Progress.finish()
             })
             .catch(()=>{
-                  toast({
-                    type: 'error',
-                    title: 'Problema al ingresar Usuario'
-                  })
-                  this.$Progress.finish()
+                  this.$Progress.fail()
             })
 
           },
@@ -253,6 +264,7 @@
                     cancelButtonColor: '#d33',
                     confirmButtonText: 'Sí, eliminar'
                   }).then((result) => {
+                     this.$Progress.start()
                         // Send request to the server
                          if (result.value) {
                                 this.form.delete('api/user/'+id).then(()=>{
@@ -261,8 +273,10 @@
                                         'El Usuario ha sido eliminado exitosamente',
                                         'success'
                                         )
+                                         this.$Progress.finish()
                                     NewVue.$emit('After');
                                 }).catch(()=> {
+                                   this.$Progress.fail()
                                     wal("Fallo!", "Hubo un error al tratar de elminar al usuario", "warning");
                                 });
                          }

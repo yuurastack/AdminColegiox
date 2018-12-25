@@ -5,12 +5,17 @@
  */
 
 require('./bootstrap');
+require('./dropzone');
 
 window.Vue = require('vue');
 import moment from 'moment';
 import { Form, HasError, AlertError,AlertErrors, AlertSuccess } from 'vform'
 import VueProgressBar from 'vue-progressbar'
 import {ServerTable, ClientTable, Event} from 'vue-tables-2';
+import vue2Dropzone from 'vue2-dropzone'
+
+
+window.drop = vue2Dropzone;
 
 import Swal from 'sweetalert2'
 window.wal = Swal;
@@ -26,6 +31,22 @@ window.toast =toast;
 
 window.NewVue =new Vue();
 
+// Laravel
+
+Vue.component(
+  'passport-clients',
+  require('./components/passport/Clients.vue')
+);
+
+Vue.component(
+  'passport-authorized-clients',
+  require('./components/passport/AuthorizedClients.vue')
+);
+
+Vue.component(
+  'passport-personal-access-tokens',
+  require('./components/passport/PersonalAccessTokens.vue')
+);
 // CommonJS
 
 
@@ -52,6 +73,7 @@ Vue.use(ClientTable);
 
 let routes = [
     { path: '/dashboard', component: require('./components/Dashboard.vue') },
+    { path: '/developer', component: require('./components/Developer.vue') },
     { path: '/profile', component: require('./components/Profile.vue') },
     { path: '/users', component: require('./components/Users.vue') }
   ]

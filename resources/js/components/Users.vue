@@ -189,9 +189,16 @@
   </div>
 </div>
         </div>
+        <div class="col-1"></div>
         </div>
   
+
+
+
+
 </template>
+
+
 
 
 
@@ -208,7 +215,7 @@
                     email: '',
                     password: '',
                     type: '',
-                    photo: '',
+                    photo: 'default.png',
 
                 
                 })
@@ -236,6 +243,7 @@
           },
           crearUsuario(){
             this.$Progress.start()
+            this.form.photo='default.png'
             this.form.post('api/user')
             .then(()=>{
               NewVue.$emit('After');
@@ -260,9 +268,10 @@
                     text: "Luego no podrá revertir la operación",
                     type: 'warning',
                     showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Sí, eliminar'
+                    confirmButtonColor: '#2AA198',
+                    cancelButtonColor: '#e83e8c',
+                    confirmButtonText: 'Sí, eliminar',
+                    cancelButtonText:'Cancelar'
                   }).then((result) => {
                      this.$Progress.start()
                         // Send request to the server

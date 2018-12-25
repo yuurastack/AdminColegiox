@@ -9,6 +9,12 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -53,6 +59,41 @@ class UserController extends Controller
     public function show($id)
     {
         //
+    }
+    //profile
+    public function updateProfile(Request $request)
+    {
+        $user= auth('api')->user();
+
+        $this->validate($request,[
+            'name' => 'required|string|max:191',
+            'email' => 'required|string|email|max:191|unique:users,email,'.$user->id,
+            'password' => 'sometimes|min:6'
+        ]);
+
+        
+        $FotoActual = $user->photo;
+
+        if ($request->photo!= $FotoActual){
+
+            $nombre = time().'.' . explode('/', explode(':', substr($request->photo, 0, strpos($request->photo, ';')))[1])[1];
+            \Image::make($request->photo)->save(public_path('img/profile/').$nombre);
+            $user->photo=$nombre;
+            
+        }
+        $user->email = $request->email;
+        $user->name = $request->name;
+        if (!empty($request->password)){
+            $user->password =  Hash::make($request['password']);
+        }
+
+        $user->save();
+       
+    }
+
+    public function profile()
+    {
+        return auth('api')->user();
     }
 
     /**

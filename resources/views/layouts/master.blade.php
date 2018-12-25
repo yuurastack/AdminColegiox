@@ -107,6 +107,15 @@
           </router-link>
         </li>
 
+        <li class="nav-item">
+          <router-link to= '/Developer' class="nav-link">
+            <i class="nav-icon fas fa-cogs"></i>
+            <p>
+              Dev Tools
+            </p>
+          </router-link>
+        </li>
+
 
 
         <li class="nav-item">

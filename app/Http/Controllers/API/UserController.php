@@ -72,15 +72,27 @@ class UserController extends Controller
         ]);
 
         
-        $FotoActual = $user->photo;
+        $fotoActual = $user->photo;
 
-        if ($request->photo!= $FotoActual){
+        if ($request->photo!= $fotoActual){
 
             $nombre = time().'.' . explode('/', explode(':', substr($request->photo, 0, strpos($request->photo, ';')))[1])[1];
             \Image::make($request->photo)->save(public_path('img/profile/').$nombre);
             $user->photo=$nombre;
+
+            $fotoUsuario= public_path('img/profile/').$fotoActual;
+
+            if(file_exists($fotoUsuario)){
+                @unlink($fotoUsuario);
+            }
+           
+            
+         
+            
             
         }
+
+
         $user->email = $request->email;
         $user->name = $request->name;
         if (!empty($request->password)){

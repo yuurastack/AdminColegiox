@@ -266,12 +266,13 @@
                 this.form.put('api/profile/')
                 .then(()=>{
                     this.cargarInfo();
-                    this.$Progress.finish();
+                    
                                   wal(
                     'Actualizado',
-                    'El Usuario ha sido actualizado exitosamente',
+                    'Su perfil ha sido actualizado exitosamente',
                     'success'
                     )
+                    this.$Progress.finish();
                 })
                 .catch(()=>{
                     this.$Progress.fail();
